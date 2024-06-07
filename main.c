@@ -8,7 +8,7 @@ typedef struct Task {
     char description[MAX_DESCRIPTION_SIZE];
     struct Task* prox;
 } TASK;
-
+//dfaffaaf
 // CONSTRUCTOR
 TASK* createTask(int id, char* description);
 TASK* createTaskByScanf();
