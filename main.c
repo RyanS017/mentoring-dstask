@@ -2,13 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_DESCRIPTION_SIZE 100
+
 typedef struct Task {
     int id;
     char description[MAX_DESCRIPTION_SIZE];
     struct Task* prox;
 } TASK;
+
 TASK* queue = NULL;
 TASK* list = NULL;
+TASK* stack = NULL;
 // CONSTRUCTOR
 TASK* createTask(int id, char* description);
 TASK* createTaskByScanf();
@@ -42,13 +45,9 @@ int main() {
             case 1:
                 // CREATE A TASK, THEN ADD TO PENDING QUEUE
                 TASK* newTask = createTaskByScanf();
-                //if(queue == NULL){
-                  //  queue = newTask;
-                   // break;
-               // }else{
                     putToPendingQueue(newTask);
                     break;
-               // }
+
 
             case 2:
                 // SEE ALL TASKS FROM PENDING QUEUE
@@ -58,15 +57,8 @@ int main() {
             case 3:
                 // COMPLETE FIRST PENDING TASK
                 TASK* firstTask = getFromPendingQueue();
-                //if(queue == NULL || queue->prox == NULL) queue = NULL;
-                //else if(queue->prox->prox == NULL) queue = queue->prox;
                 if(firstTask != NULL) {
-                    //if(list == NULL){
-                      //  list = firstTask;
-                        //list->prox = NULL;
-                   // }else{
                     addToCompletedList(firstTask);
-                   // }
                 }
                 break;
 
@@ -95,9 +87,8 @@ int main() {
             case 7:
                 // SET LAST DRAFT AS PENDING TASK
                 TASK* lastTask = popFromDraftStack();
-                if(task != NULL) {
-                    //ver depois
-                    putToPendingQueue(task);
+                if(lastTask != NULL) {
+                    putToPendingQueue(lastTask);
                 }
                 break;
 
@@ -168,18 +159,28 @@ TASK* removeFromCompletedListByItsId(int id) {
         if(aux->id == id)
         { 
             if(aux2 == aux && aux->prox == NULL) {
-                return aux;
                 list = NULL;
+                return aux;
             }
-            while(aux2->prox != aux || aux2 != aux){
+            while(aux2->prox != aux && aux2 != aux){
                 aux2 = aux2->prox;
             }
-            aux2->prox = aux2->prox->prox;
+            if(aux->prox == NULL){
+                aux2->prox = NULL;
+                return aux;
+                
+            }
+            if(list == aux){
+                list = list->prox;
+                aux->prox = NULL;
+                return aux;
+            }
+            aux2->prox = aux2->prox->prox;    
             aux->prox = NULL;
             return aux;            
         }
+        aux = aux->prox;
     }
-    // YOUR CODE HERE
     return NULL; // Return NULL if ID not exist
 }
 
@@ -192,6 +193,7 @@ void seeAllCompletedList() {
         printf("\nId: %d\nDescription: %s", aux->id, aux->description);
         aux = aux->prox;
     }
+    printf("\n");
 }
 
 // QUEUE
@@ -233,27 +235,47 @@ void seeAllPendingQueue() {
         printf("\nId: %d\nDescription: %s", aux->id, aux->description);
         aux = aux->prox;
     }
-    
+    printf("\n");    
 }
 
 // STACK
 void pushToDraftStack(TASK* newTask) {
     printf("Pushing Task to Draft Stack\n");
-
-    // YOUR CODE HERE
+    if(stack == NULL){
+        stack = newTask;
+        return;
+    }
+    TASK* aux = newTask;
+    aux->prox = stack;
+    stack = aux;
 }
 
 TASK* popFromDraftStack() {
     printf("Popping Task to Draft Stack\n");
 
-    // YOUR CODE HERE
+    if(stack == NULL){
     return NULL; // Return NULL if Stack is empty
+    }
+    TASK* aux = stack;
+    if(stack->prox != NULL){
+        stack = stack->prox;
+    }else{
+        stack = NULL;
+    }
+    aux->prox = NULL;
+    return aux;
 }
 
 void seeAllDraftStack() {
     printf("Printing All Draft Stack\n");
 
-    // YOUR CODE HERE
+    TASK* aux = stack;
+    while (aux != NULL)
+    {
+        printf("\nId: %d\nDescription: %s", aux->id, aux->description);
+        aux = aux->prox;
+    }
+    printf("\n"); 
 }
 
 // MENU
