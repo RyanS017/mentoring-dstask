@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_DESCRIPTION_SIZE 100
-
 typedef struct Task {
     int id;
     char description[MAX_DESCRIPTION_SIZE];
     struct Task* prox;
 } TASK;
-//dfaffaaf
+TASK* queue = NULL;
+TASK* list = NULL;
 // CONSTRUCTOR
 TASK* createTask(int id, char* description);
 TASK* createTaskByScanf();
@@ -34,18 +34,21 @@ void displayMenu();
 int main() {
     int choice;
     printf("################# TASK MANAGER SYSTEM #################");
-
     do {
         displayMenu();
         printf("Choose an option: ");
         scanf("%d", &choice);
-
         switch (choice) {
             case 1:
                 // CREATE A TASK, THEN ADD TO PENDING QUEUE
                 TASK* newTask = createTaskByScanf();
-                putToPendingQueue(newTask);
-                break;
+                //if(queue == NULL){
+                  //  queue = newTask;
+                   // break;
+               // }else{
+                    putToPendingQueue(newTask);
+                    break;
+               // }
 
             case 2:
                 // SEE ALL TASKS FROM PENDING QUEUE
@@ -55,8 +58,15 @@ int main() {
             case 3:
                 // COMPLETE FIRST PENDING TASK
                 TASK* firstTask = getFromPendingQueue();
+                //if(queue == NULL || queue->prox == NULL) queue = NULL;
+                //else if(queue->prox->prox == NULL) queue = queue->prox;
                 if(firstTask != NULL) {
+                    //if(list == NULL){
+                      //  list = firstTask;
+                        //list->prox = NULL;
+                   // }else{
                     addToCompletedList(firstTask);
+                   // }
                 }
                 break;
 
@@ -86,6 +96,7 @@ int main() {
                 // SET LAST DRAFT AS PENDING TASK
                 TASK* lastTask = popFromDraftStack();
                 if(task != NULL) {
+                    //ver depois
                     putToPendingQueue(task);
                 }
                 break;
@@ -131,60 +142,116 @@ TASK* createTaskByScanf() {
 
 // LIST
 void addToCompletedList(TASK* newTask) {
-    printf("Adding Task to Completed List");
+    printf("Adding Task to Completed List\n");
 
-    // YOUR CODE HERE
+        if(list == NULL){
+            list = newTask;
+            list->prox = NULL;
+        }
+        else{
+            TASK* aux = list;
+            while (aux->prox != NULL)
+            {
+                printf("%d\n", aux->id);
+                aux = aux->prox;
+            }
+            aux->prox = newTask;
+        }
+    
 }
 
 TASK* removeFromCompletedListByItsId(int id) {
-    printf("Removing Task from Completed List");
-
+    printf("Removing Task from Completed List\n");
+    TASK* aux = list;
+    TASK * aux2 = list;
+    while(aux != NULL){
+        if(aux->id == id)
+        { 
+            if(aux2 == aux && aux->prox == NULL) {
+                return aux;
+                list = NULL;
+            }
+            while(aux2->prox != aux || aux2 != aux){
+                aux2 = aux2->prox;
+            }
+            aux2->prox = aux2->prox->prox;
+            aux->prox = NULL;
+            return aux;            
+        }
+    }
     // YOUR CODE HERE
     return NULL; // Return NULL if ID not exist
 }
 
 void seeAllCompletedList() {
-    printf("Printing All Completed List");
+    printf("Printing All Completed List\n");
 
-    // YOUR CODE HERE
+    TASK* aux = list;
+    while (aux != NULL)
+    {
+        printf("\nId: %d\nDescription: %s", aux->id, aux->description);
+        aux = aux->prox;
+    }
 }
 
 // QUEUE
 void putToPendingQueue(TASK* newTask) {
-    printf("Putting Task to Pending Queue");
-
-    // YOUR CODE HERE
+    printf("Putting Task to Pending Queue\n");
+    
+    if(queue == NULL){
+        queue = newTask;
+    }
+    else{
+        TASK* aux = queue;
+        while (aux->prox != NULL)
+        {
+            aux = aux->prox;
+        }
+        aux->prox = newTask;
+        
+    }
 }
 
 TASK* getFromPendingQueue() {
-    printf("Getting Task from Pending Queue");
-
-    // YOUR CODE HERE
-    return NULL; // Return NULL if Queue is empty
+    printf("Getting Task from Pending Queue\n");
+    if(queue == NULL){
+        return  NULL;
+    }
+    TASK* aux = queue;
+    TASK* aux2 = queue->prox;
+    queue = aux2;
+    aux->prox = NULL;
+    return aux;
 }
 
 void seeAllPendingQueue() {
-    printf("Printing All Pending Queue");
+    printf("Printing All Pending Queue\n");
 
-    // YOUR CODE HERE
+    TASK* aux = queue;
+    while (aux != NULL)
+    {
+        printf("\nId: %d\nDescription: %s", aux->id, aux->description);
+        aux = aux->prox;
+    }
+    
 }
 
 // STACK
 void pushToDraftStack(TASK* newTask) {
-    printf("Pushing Task to Draft Stack");
+    printf("Pushing Task to Draft Stack\n");
 
     // YOUR CODE HERE
 }
 
 TASK* popFromDraftStack() {
-    printf("Popping Task to Draft Stack");
+    printf("Popping Task to Draft Stack\n");
 
     // YOUR CODE HERE
     return NULL; // Return NULL if Stack is empty
 }
 
 void seeAllDraftStack() {
-    printf("Printing All Draft Stack");
+    printf("Printing All Draft Stack\n");
 
     // YOUR CODE HERE
 }
