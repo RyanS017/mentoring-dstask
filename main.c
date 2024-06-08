@@ -133,7 +133,7 @@ TASK* createTaskByScanf() {
 
 // LIST
 void addToCompletedList(TASK* newTask) {
-    printf("Adding Task to Completed List\n");
+    printf("\nAdding Task to Completed List\n");
 
         if(list == NULL){
             list = newTask;
@@ -152,7 +152,7 @@ void addToCompletedList(TASK* newTask) {
 }
 
 TASK* removeFromCompletedListByItsId(int id) {
-    printf("Removing Task from Completed List\n");
+    printf("\nRemoving Task from Completed List\n");
     TASK* aux = list;
     TASK * aux2 = list;
     while(aux != NULL){
@@ -185,7 +185,7 @@ TASK* removeFromCompletedListByItsId(int id) {
 }
 
 void seeAllCompletedList() {
-    printf("Printing All Completed List\n");
+    printf("\nPrinting All Completed List\n");
 
     TASK* aux = list;
     while (aux != NULL)
@@ -198,7 +198,7 @@ void seeAllCompletedList() {
 
 // QUEUE
 void putToPendingQueue(TASK* newTask) {
-    printf("Putting Task to Pending Queue\n");
+    printf("\nPutting Task to Pending Queue\n");
     
     if(queue == NULL){
         queue = newTask;
@@ -215,7 +215,7 @@ void putToPendingQueue(TASK* newTask) {
 }
 
 TASK* getFromPendingQueue() {
-    printf("Getting Task from Pending Queue\n");
+    printf("\nGetting Task from Pending Queue\n");
     if(queue == NULL){
         return  NULL;
     }
@@ -227,7 +227,7 @@ TASK* getFromPendingQueue() {
 }
 
 void seeAllPendingQueue() {
-    printf("Printing All Pending Queue\n");
+    printf("\nPrinting All Pending Queue\n");
 
     TASK* aux = queue;
     while (aux != NULL)
@@ -240,7 +240,7 @@ void seeAllPendingQueue() {
 
 // STACK
 void pushToDraftStack(TASK* newTask) {
-    printf("Pushing Task to Draft Stack\n");
+    printf("\nPushing Task to Draft Stack\n");
     if(stack == NULL){
         stack = newTask;
         return;
@@ -251,7 +251,7 @@ void pushToDraftStack(TASK* newTask) {
 }
 
 TASK* popFromDraftStack() {
-    printf("Popping Task to Draft Stack\n");
+    printf("\nPopping Task to Draft Stack\n");
 
     if(stack == NULL){
     return NULL; // Return NULL if Stack is empty
@@ -267,7 +267,7 @@ TASK* popFromDraftStack() {
 }
 
 void seeAllDraftStack() {
-    printf("Printing All Draft Stack\n");
+    printf("\nPrinting All Draft Stack\n");
 
     TASK* aux = stack;
     while (aux != NULL)
